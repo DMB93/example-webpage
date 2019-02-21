@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<style>
+  #map-canvas{
+    width: 400px;
+    height: 400px;
+  }
+</style>
+
+<html>
+  <head lang="de">
+    <meta charset="utf-8" />
+    <title> Flappy Bird Clone </title>
+    <script type="text/javascript" src="phaser.min.js"></script>
+    <script type="text/javascript" src="main.js"></script>
+  </head>
+
+  <body>
+
+    <h1>Überschrift</h1>
+    <main>
+      Content of the document......
+      <nav id="navigation" class="flex-item">
+        <ul style="list-style: none">
+          <li>Navigation &lt;nav&gt;</li>
+          <li><a href="demo.html">Startseite</a></li>
+          <li><a href="http://www.csszengarden.com/">Was kann CSS?</a></li>
+        </ul>
+     </nav>
+
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCfeka0cOw7USVqQUP1qz_QieqHI8QdJJM&libraries=places"></script>
+<input type="text" name="mapsearch">
+<div id="map-canvas"></div>
+
+<script type="text/javascript">
+    var map = new google.maps.Map(document.getElementById('map-canvas'),{
+      center{
+        lat: 27.72,
+        lng: 85.36
+      },
+      zoom: 15
+    });
+</script>
+
+<h2> Trennung von Inhalt, Präsentation und Verhalten &lt;main&gt;</h2>
+ <img src="trennung.png") alt="HTML, CSS, Javascript">
+
+
+
+      <aside id="anmerkung">
+<h3>Anmerkung &lt;aside&gt;</h3>
+<p>
+Float nur auf größeren Bildschirmen
+</p> </aside>
+
+    </main>
+    <footer>
+        Fußbereich
+    </footer>
+  </body>
+
+</html>

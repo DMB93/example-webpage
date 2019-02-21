@@ -1,61 +1,242 @@
 <!DOCTYPE html>
-<style>
-  #map-canvas{
-    width: 400px;
-    height: 400px;
-  }
-</style>
-
 <html>
-  <head lang="de">
-    <meta charset="utf-8" />
-    <title> Flappy Bird Clone </title>
-    <script type="text/javascript" src="phaser.min.js"></script>
-    <script type="text/javascript" src="main.js"></script>
-  </head>
+<style>
 
+.center {
+  background-color:#e5e5e5;
+  padding:15px;
+  text-align: center;
+  font-size: 1em;
+  width: 100%
+
+}
+.left {
+  background-color:#e5e5e5;
+  float:left;
+  width: 5em;
+  font-size: 1em;
+}
+.middle {
+  float:left;
+  width:100%;
+  padding:0 20px;
+  font-size: 1em;
+  padding-bottom: 5em;
+  text-align: center;
+}
+
+.button {
+       padding: 10px;
+       border-radius: 10px;
+       -moz-border-radius: 10px;
+       -webkit-border-radius: 10px;
+       margin:10px;
+   }
+html, body {
+ height: 100%;
+ margin: 0;
+}
+.wrapperout {
+ min-height: 100%;
+
+ /* Equal to height of footer */
+ /* But also accounting for potential margin-bottom of last child */
+ margin-bottom: -50px;
+}
+.wrapper {
+    text-align: center;
+}
+
+
+.module {
+   background-color: white;
+   border-radius: 10px;
+   padding: 20px;
+   width: 800px;
+ }
+
+
+screen and (max-width: 500px) {
+.module {
+      width: 300px;
+}
+.footer,
+.push {
+  height: 50px;
+  text-align: center;
+}
+.text {
+  text-align: center;
+}
+
+</style>
+<head>
+    <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+    <script src="http://js.api.here.com/v3/3.0/mapsjs-core.js"
+    type="text/javascript" charset="utf-8"></script>
+    <script src="http://js.api.here.com/v3/3.0/mapsjs-service.js"
+    type="text/javascript" charset="utf-8"></script>
+    <script src="http://js.api.here.com/v3/3.0/mapsjs-places.js"
+    type="text/javascript" charset="utf-8"></script>
+</head>
   <body>
+    <div class="wrapperout">
+      <div class="center" >
+        <input id="pac-input" class="controls" type="text" placeholder="Search Box" onchange="getResults()" minwidth="20" >
+        <!--<div id="map"></div>-->
+        <button class="button" onclick="getResults()">Get my Location</button>
+      </div>
 
-    <h1>Überschrift</h1>
-    <main>
-      Content of the document......
-      <nav id="navigation" class="flex-item">
-        <ul style="list-style: none">
-          <li>Navigation &lt;nav&gt;</li>
-          <li><a href="demo.html">Startseite</a></li>
-          <li><a href="http://www.csszengarden.com/">Was kann CSS?</a></li>
-        </ul>
-     </nav>
+      <div class="middle">
+        <div class="wrapper">
+            <button class="button" onclick="nextPlace()" >next Place</button>
+        </div>
+        <p id="demo2" class="text"></p>
+        <div class="wrapper">
+          <button class="button" onclick="takePlace()">Take Place</button>
+        </div>
+      </div>
 
-<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCfeka0cOw7USVqQUP1qz_QieqHI8QdJJM&libraries=places"></script>
-<input type="text" name="mapsearch">
-<div id="map-canvas"></div>
+      <p id="demo" class="responsiveText"></p>
+      <div class="push"></div>
+    </div>
 
-<script type="text/javascript">
-    var map = new google.maps.Map(document.getElementById('map-canvas'),{
-      center{
-        lat: 27.72,
-        lng: 85.36
-      },
-      zoom: 15
-    });
-</script>
-
-<h2> Trennung von Inhalt, Präsentation und Verhalten &lt;main&gt;</h2>
- <img src="trennung.png") alt="HTML, CSS, Javascript">
-
-
-
-      <aside id="anmerkung">
-<h3>Anmerkung &lt;aside&gt;</h3>
-<p>
-Float nur auf größeren Bildschirmen
-</p> </aside>
-
-    </main>
-    <footer>
-        Fußbereich
+    <footer class="footer">
+        &copy; Dennis B&auml;uml
     </footer>
-  </body>
 
+
+
+    <script>
+
+    var platform = new H.service.Platform({
+      app_id: 'YE12fyExIGplnoZxJO0w',
+      app_code: 'y4uwjTKhgVvHSaISSsIxRA'
+    });
+    var input = document.getElementById('pac-input');
+    var searchText = "";
+
+    var currentLocation = ""
+    getLocation();
+    // Obtain an Explore object through which to submit search
+    // requests:
+    var search = new H.places.Search(platform.getPlacesService()),
+      searchResult, error;
+
+
+    // Define a callback function to handle data on success:
+    function onResult(data) {
+      searchResult = data;
+      liste = searchResult.results.items;
+    }
+
+    // Define a callback function to handle errors:
+    function onError(data) {
+      error = data;
+    }
+
+      var x = document.getElementById("demo");
+      var y = document.getElementById("demo2");
+      var api_key = "AIzaSyCfeka0cOw7USVqQUP1qz_QieqHI8QdJJM";
+      var liste = [];
+      var currentObject = null;
+      input.onchange = function() {
+         searchText = document.getElementById('pac-input').value;
+        //x.innerHTML = searchText;
+        getResults();
+
+        setTimeout("nextPlace()", 200);
+      }
+      function getResults(){
+        // Define search parameters:
+        var params = {
+        };
+        console.log("search ist " + searchText);
+        console.log("at ist " + currentLocation);
+
+        if(searchText.length > 0){
+          params["q"] = searchText;
+          params["at"] = currentLocation;
+          //params["at"] = '49.02170867276317,8.374853575834013';
+
+          //console.log("search ist " + searchText);
+
+          search.request(params, {}, onResult, onError);
+
+        } else {
+          console.log("search ist leer!");
+        }
+
+      }
+
+      function getLocation() {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(showPosition, showError);
+        } else {
+          x.innerHTML = "Geolocation is not supported by this browser.";
+        }
+      }
+
+      function showPosition(position) {
+        //x.innerHTML = "Latitude: " + position.coords.latitude +
+        //"<br>Longitude: " + position.coords.longitude ;//+
+        //"<br>Ort: " + searchResult.results.items[0].title;
+        currentLocation = position.coords.latitude +"," +position.coords.longitude;
+
+        //x.innerHTML = currentLocation;
+
+      }
+
+      function showError(error) {
+        switch(error.code) {
+          case error.PERMISSION_DENIED:
+            x.innerHTML = "User denied the request for Geolocation."
+            break;
+          case error.POSITION_UNAVAILABLE:
+            x.innerHTML = "Location information is unavailable."
+            break;
+          case error.TIMEOUT:
+            x.innerHTML = "The request to get user location timed out."
+            break;
+          case error.UNKNOWN_ERROR:
+            x.innerHTML = "An unknown error occurred."
+            break;
+        }
+      }
+
+      function showLocation(place) {
+        x.innerHTML = "Latitude: " + place.name +
+        "<br>Longitude: " + place.id;
+      }
+
+      function nextPlace() {
+        if(searchResult.results.items.length > 0){
+          currentObject = liste.pop();
+
+            y.innerHTML = "<br>"+currentObject.title;
+            y.innerHTML += "<br> Durchschnittsbewertung: " +currentObject.averageRating;
+            y.innerHTML += "<br> Distanz: "+currentObject.distance;
+            y.innerHTML += "<br>"+currentObject.vicinity;
+
+            //y.innerHTML += "<br>"+ '<a href=' + currentObject.href + ' >Show in Here</a>';
+            //currentObject.href;
+        } else {
+          console.log("Liste ist leer!");
+        }
+
+      }
+
+
+      function takePlace() {
+        y.innterHTML += "<br>"+ currentObject.href;
+
+      }
+
+    </script>
+    <script src""
+         async defer></script>
+    <div>
+
+    </div>
+  </body>
 </html>
