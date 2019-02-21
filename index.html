@@ -10,14 +10,7 @@
   width: 100%
 
 }
-.left {
-  background-color:#e5e5e5;
-  float:left;
-  width: 5em;
-  font-size: 1em;
-}
 .middle {
-  float:left;
   width:100%;
   padding:0 20px;
   font-size: 1em;
@@ -52,14 +45,9 @@ html, body {
    background-color: white;
    border-radius: 10px;
    padding: 20px;
-   width: 800px;
  }
 
 
-screen and (max-width: 500px) {
-.module {
-      width: 300px;
-}
 .footer,
 .push {
   height: 50px;
@@ -87,6 +75,9 @@ screen and (max-width: 500px) {
   <body>
     <div class="wrapperout">
       <div class="center" >
+        <h1>Go out</h1>
+        <h3>A Tinder like application to find places near your location to go out.</h3>
+
         <input id="pac-input" class="controls" type="text" placeholder="Search Box" onchange="getResults()" minwidth="20" >
         <!--<div id="map"></div>-->
         <button class="button" onclick="getResults()">Get my Location</button>
