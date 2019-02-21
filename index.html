@@ -78,6 +78,10 @@ screen and (max-width: 500px) {
     type="text/javascript" charset="utf-8"></script>
     <script src="https://js.api.here.com/v3/3.0/mapsjs-places.js"
     type="text/javascript" charset="utf-8"></script>
+    <script src="https://js.api.here.com/v3/3.0/mapsjs-ui.js"
+     type="text/javascript" charset="utf-8"></script>
+     <link rel="stylesheet" type="text/css"
+      href="https://js.api.here.com/v3/3.0/mapsjs-ui.css" />
 
 </head>
   <body>
@@ -94,11 +98,12 @@ screen and (max-width: 500px) {
         </div>
         <p id="demo2" class="text"></p>
         <div class="wrapper">
-          <button class="button" onclick="takePlace()">Take Place</button>
+          <!--<button class="button" onclick="takePlace()">Take Place</button>-->
+          <p id="demo" class="responsiveText"></p>
+          <div style="width: 640px; height: 480px; align: center" id="mapContainer"></div>
         </div>
       </div>
 
-      <p id="demo" class="responsiveText"></p>
       <div class="push"></div>
     </div>
 
@@ -179,12 +184,16 @@ screen and (max-width: 500px) {
         }
       }
 
+      var currentLat;
+      var currentLong;
+
       function showPosition(position) {
         //x.innerHTML = "Latitude: " + position.coords.latitude +
         //"<br>Longitude: " + position.coords.longitude ;//+
         //"<br>Ort: " + searchResult.results.items[0].title;
         currentLocation = position.coords.latitude +"," +position.coords.longitude;
-
+        currentLat = position.coords.latitude;
+        currentLong = position.coords.longitude;
         //x.innerHTML = currentLocation;
 
       }
@@ -219,6 +228,9 @@ screen and (max-width: 500px) {
             y.innerHTML += "<br> Durchschnittsbewertung: " +currentObject.averageRating;
             y.innerHTML += "<br> Distanz: "+currentObject.distance;
             y.innerHTML += "<br>"+currentObject.vicinity;
+            //y.innerHTML += "<br>"+currentObject.position[0];
+            y.innerHTML += "<br>"+currentObject.openingHours.text;
+
 
             //y.innerHTML += "<br>"+ '<a href=' + currentObject.href + ' >Show in Here</a>';
             //currentObject.href;
@@ -230,8 +242,30 @@ screen and (max-width: 500px) {
 
 
       function takePlace() {
-        y.innterHTML += "<br>"+ currentObject.href;
 
+        y.innterHTML += "<br>"+ currentObject.href;
+                // Obtain the default map types from the platform object:
+                /*
+        var defaultLayers = platform.createDefaultLayers();
+
+        // Instantiate (and display) a map object:
+
+        var map = new H.Map(
+          document.getElementById('mapContainer'),
+          defaultLayers.normal.map,
+          {
+            zoom: 10,
+            center: { lat: currentLat, lng: currentLong }
+          });
+              var group = new H.map.Group();
+          var ui = H.ui.UI.createDefault(map, platform.createDefaultLayers());
+              map.addObject(group);
+
+            var marker = new H.map.Marker({lat: currentObject.position[0],
+              lng: currentObject.position[1]});
+              group.addObjects(marker);
+*/
+        //x.innerHTML = map;
       }
 
     </script>
